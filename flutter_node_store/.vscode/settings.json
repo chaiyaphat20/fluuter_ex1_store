@@ -1,7 +1,7 @@
 // .vscode/settings.json
 {
   "dart.enableSdkFormatter": true,
-  "dart.lineLength": 40,
+  "dart.lineLength": 60,
   "dart.showTodos": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
