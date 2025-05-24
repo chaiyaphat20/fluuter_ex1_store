@@ -97,7 +97,7 @@ class CallAPI {
     } else {
       try {
         final response = await _dio.post(
-          'auth/register',
+          'auth/login',
           data: data.toJson(),
         );
         final registerResponse = RegisterResponse.fromJson(
