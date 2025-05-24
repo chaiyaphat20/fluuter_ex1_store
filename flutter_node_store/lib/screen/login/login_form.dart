@@ -11,8 +11,12 @@ class LoginForm extends StatelessWidget {
   LoginForm({super.key});
 
   final _formKeyLogin = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(
+    text: "art@gmail.com",
+  );
+  final _passwordController = TextEditingController(
+    text: "123456",
+  );
 
   Future<void> _handleLogin(BuildContext context) async {
     if (!_formKeyLogin.currentState!.validate()) return;
