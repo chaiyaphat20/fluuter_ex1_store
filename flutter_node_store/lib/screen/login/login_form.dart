@@ -21,18 +21,16 @@ class LoginForm extends StatelessWidget {
       email: _emailController.text,
       password: _passwordController.text,
     );
-
     var result = await LoginAPI().loginAPI(body);
-    print(result.errorMessage);
     if (result.isSuccess) {
       final response = result.data!;
-      Utility.logger.e("response");
+      Utility.logger.d(response.toJson());
 
       if (response.status == 'ok') {
         await Utility.showAlertDialog(
           context,
-          'สำเร็จ',
-          'Login สำเร็จ!',
+          'ok',
+          response.message,
         );
         // Navigator.pushReplacementNamed(
         //   context,
@@ -41,14 +39,14 @@ class LoginForm extends StatelessWidget {
       } else {
         Utility.showAlertDialog(
           context,
-          'แจ้งเตือน',
+          'error',
           response.message,
         );
       }
     } else {
       Utility.showAlertDialog(
         context,
-        'แจ้งเตือน',
+        'error',
         result.errorMessage,
       );
     }

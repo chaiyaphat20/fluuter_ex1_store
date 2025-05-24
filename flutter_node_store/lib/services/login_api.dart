@@ -53,9 +53,6 @@ class LoginAPI {
         'auth/login',
         data: data.toJson(),
       );
-      print("=== DEBUG: Raw response data ===");
-      print(response.data);
-
       final loginResponse = LoginResponse.fromJson(
         response.data,
       );
