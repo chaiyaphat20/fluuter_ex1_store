@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Utility {
   // Logger
@@ -60,6 +61,61 @@ class Utility {
       return '';
     }
   }
+
+  // Shared Preferences ----------------------------------------------
+  static SharedPreferences? _preferences;
+  static Future initSharedPrefs() async =>
+      _preferences = await SharedPreferences.getInstance();
+
+  // Get Shared Preferences
+  static dynamic getSharedPreference(String key) {
+    if (_preferences == null) return null;
+    return _preferences!.get(key);
+  }
+
+  // Set Shared Preferences
+  static Future<bool> setSharedPreference(
+    String key,
+    dynamic value,
+  ) async {
+    if (_preferences == null) return false;
+    if (value is String) {
+      return await _preferences!.setString(key, value);
+    }
+    if (value is int) {
+      return await _preferences!.setInt(key, value);
+    }
+    if (value is bool) {
+      return await _preferences!.setBool(key, value);
+    }
+    if (value is double) {
+      return await _preferences!.setDouble(key, value);
+    }
+    return false;
+  }
+
+  // Remove Shared Preferences
+  static Future<bool> removeSharedPreference(
+    String key,
+  ) async {
+    if (_preferences == null) return false;
+    return await _preferences!.remove(key);
+  }
+
+  // Clear Shared Preferences
+  static Future<bool> clearSharedPreference() async {
+    if (_preferences == null) return false;
+    return await _preferences!.clear();
+  }
+
+  // Check Shared Preferences
+  static Future<bool> checkSharedPreference(
+    String key,
+  ) async {
+    if (_preferences == null) return false;
+    return _preferences!.containsKey(key);
+  }
+  // ----------------------------------------------------------------
 
   // Alert Dialog ---------------------------------------------------
   static Future showAlertDialog(context, title, content) {
