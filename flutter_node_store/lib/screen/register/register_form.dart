@@ -147,7 +147,6 @@ class RegisterForm extends StatelessWidget {
                       );
                       var response = await CallAPI()
                           .registerAPI(body);
-                      logger.e(response);
                       if (response.message ==
                           'No Network Connection') {
                         // แจ้งเตือนว่าไม่มีการเชื่อมต่อ Internet

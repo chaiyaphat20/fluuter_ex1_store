@@ -16,7 +16,7 @@ class CallAPI {
     // Check Network Connection
     String networkStatus = await Utility.checkNetwork();
     if (networkStatus == '' || networkStatus.isEmpty) {
-      logger.w('No Network Connection');
+      Utility.logger.w('No Network Connection');
 
       // Return RegisterResponse สำหรับ network error
       return RegisterResponse(
@@ -31,7 +31,9 @@ class CallAPI {
           data: data.toJson(),
         );
 
-        logger.d('Register API Response: ${response.data}');
+        Utility.logger.d(
+          'Register API Response: ${response.data}',
+        );
 
         // แปลง response เป็น RegisterResponse
         final registerResponse = RegisterResponse.fromJson(
@@ -39,13 +41,15 @@ class CallAPI {
         );
         return registerResponse;
       } catch (e) {
-        logger.e('Register API Error: $e');
+        Utility.logger.e('Register API Error: $e');
 
         String errorMessage =
             'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
 
         if (e is DioException) {
-          logger.e('DioException: ${e.response?.data}');
+          Utility.logger.e(
+            'DioException: ${e.response?.data}',
+          );
 
           if (e.response != null) {
             // ถ้า server ส่ง error message มา
@@ -56,7 +60,7 @@ class CallAPI {
                 errorMessage = errorData['message'];
               }
             } catch (parseError) {
-              logger.e(
+              Utility.logger.e(
                 'Error parsing error response: $parseError',
               );
             }
@@ -67,6 +71,61 @@ class CallAPI {
         }
 
         // Return RegisterResponse สำหรับ API error
+        return RegisterResponse(
+          status: 'error',
+          message: errorMessage,
+          token: '',
+        );
+      }
+    }
+  }
+
+  //login
+  Future<RegisterResponse> loginAPI(
+    RegisterRequest data,
+  ) async {
+    // Check Network Connection
+    String networkStatus = await Utility.checkNetwork();
+    if (networkStatus == '' || networkStatus.isEmpty) {
+      Utility.logger.w('No Network Connection');
+
+      // Return RegisterResponse สำหรับ network error
+      return RegisterResponse(
+        status: 'error',
+        message: 'No Network Connection',
+        token: '',
+      );
+    } else {
+      try {
+        final response = await _dio.post(
+          'auth/register',
+          data: data.toJson(),
+        );
+        final registerResponse = RegisterResponse.fromJson(
+          response.data,
+        );
+        return registerResponse;
+      } catch (e) {
+        String errorMessage =
+            'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
+        if (e is DioException) {
+          if (e.response != null) {
+            try {
+              final errorData = e.response?.data;
+              if (errorData is Map<String, dynamic> &&
+                  errorData['message'] != null) {
+                errorMessage = errorData['message'];
+              }
+            } catch (parseError) {
+              Utility.logger.e(
+                'Error parsing error response: $parseError',
+              );
+            }
+          } else {
+            errorMessage =
+                'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้';
+          }
+        }
         return RegisterResponse(
           status: 'error',
           message: errorMessage,
