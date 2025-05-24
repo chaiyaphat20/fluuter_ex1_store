@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/components/form/custom_text_form_field.dart';
 import 'package:flutter_node_store/components/rounded_button.dart';
-import 'package:flutter_node_store/components/social_media_options.dart';
 
-class LoginForm extends StatelessWidget {
-  LoginForm({super.key});
+class ForgotPasswordForm extends StatelessWidget {
+  ForgotPasswordForm({super.key});
 
-  final _formKeyLogin = GlobalKey<FormState>();
+  // สร้าง GlobalKey สำหรับ Form นี้
+  final _formKeyForgotPassword = GlobalKey<FormState>();
+
+  // สร้าง TextEditingController
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: [
           const Text(
-            "เข้าสู่ระบบ",
+            "ลืมรหัสผ่าน",
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
@@ -26,15 +27,14 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           Form(
-            key: _formKeyLogin,
+            key: _formKeyForgotPassword,
             child: Column(
               children: [
                 customTextFormField(
-                  obscureText: true,
                   controller: _emailController,
                   hintText: "Email",
                   prefixIcon: Icons.email,
-                  keyboardType: TextInputType.emailAddress,
+                  obscureText: false,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "กรุณากรอกอีเมล";
@@ -45,48 +45,18 @@ class LoginForm extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 10),
-                customTextFormField(
-                  controller: _passwordController,
-                  hintText: "Password",
-                  prefixIcon: Icons.lock,
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "กรุณากรอกรหัสผ่าน";
-                    } else if (value.length < 6) {
-                      return "กรุณากรอกรหัสผ่านอย่างน้อย 6 ตัวอักษร";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        // Forgot password
-                        Navigator.pushReplacementNamed(
-                          context,
-                          AppRouter.forgotPassword,
-                        );
-                      },
-                      child: const Text("ลืมรหัสผ่าน ?"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
                 RoundedButton(
-                  label: "LOGIN",
+                  label: "RESET PASSWORD",
                   onPressed: () {
-                    if (_formKeyLogin.currentState!
+                    if (_formKeyForgotPassword.currentState!
                         .validate()) {
-                      _formKeyLogin.currentState!.save();
+                      // ถ้าผ่านการตรวจสอบข้อมูล ให้ทำงานต่อไปนี้
+                      _formKeyForgotPassword.currentState!
+                          .save();
+
+                      // แสดงข้อความลงใน Console
                       print(
                         "Email: ${_emailController.text}",
-                      );
-                      print(
-                        "Password: ${_passwordController.text}",
                       );
                     }
                   },
@@ -94,16 +64,37 @@ class LoginForm extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          const SocialMediaOptions(),
           const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("มีบัญชีอยู่แล้ว ? "),
+              InkWell(
+                onTap: () {
+                  // กลับไปหน้า Login
+                  Navigator.pushReplacementNamed(
+                    context,
+                    AppRouter.login,
+                  );
+                },
+                child: const Text(
+                  "เข้าสู่ระบบ",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text("ยังไม่มีบัญชีกับเรา ? "),
               InkWell(
                 onTap: () {
-                  // Signup
+                  // ไปหน้า Register
                   Navigator.pushReplacementNamed(
                     context,
                     AppRouter.register,

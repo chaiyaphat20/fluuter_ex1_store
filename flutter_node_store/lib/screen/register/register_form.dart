@@ -7,6 +7,7 @@ class RegisterForm extends StatelessWidget {
   RegisterForm({super.key});
 
   // สร้าง GlobalKey สำหรับ Form นี้
+  //ชื่อ key มันจะ global มันจะพังตอน build ดังนั้น ห้ามต้องชื่อ key ซ้ำ
   final _formKeyRegister = GlobalKey<FormState>();
 
   // สร้าง TextEditingController
@@ -117,10 +118,18 @@ class RegisterForm extends StatelessWidget {
                       _formKeyRegister.currentState!.save();
 
                       // แสดงข้อมูลที่บันทึกได้ทาง Console
-                      // print("First Name: ${_firstNameController.text}");
-                      // print("Last Name: ${_lastNameController.text}");
-                      // print("Email: ${_emailController.text}");
-                      // print("Password: ${_passwordController.text}");
+                      print(
+                        "First Name: ${_firstNameController.text}",
+                      );
+                      print(
+                        "Last Name: ${_lastNameController.text}",
+                      );
+                      print(
+                        "Email: ${_emailController.text}",
+                      );
+                      print(
+                        "Password: ${_passwordController.text}",
+                      );
 
                       // เรียกใช้งาน API สำหรับลงทะเบียน Register
                       // var response = await CallAPI().registerAPI(
