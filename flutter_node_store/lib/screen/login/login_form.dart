@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_node_store/app_router.dart';
+import 'package:flutter_node_store/components/form/custom_text_form_field.dart';
+import 'package:flutter_node_store/components/rounded_button.dart';
+import 'package:flutter_node_store/components/social_media_options.dart';
+
+class LoginForm extends StatelessWidget {
+  LoginForm({super.key});
+
+  final _formKeyLogin = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        children: [
+          const Text(
+            "เข้าสู่ระบบ",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 30),
+          Form(
+            key: _formKeyLogin,
+            child: Column(
+              children: [
+                customTextFormField(
+                  obscureText: true,
+                  controller: _emailController,
+                  hintText: "Email",
+                  prefixIcon: Icons.email,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "กรุณากรอกอีเมล";
+                    } else if (!value.contains("@")) {
+                      return "กรุณากรอกอีเมลให้ถูกต้อง";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                customTextFormField(
+                  controller: _passwordController,
+                  hintText: "Password",
+                  prefixIcon: Icons.lock,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "กรุณากรอกรหัสผ่าน";
+                    } else if (value.length < 6) {
+                      return "กรุณากรอกรหัสผ่านอย่างน้อย 6 ตัวอักษร";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        // Forgot password
+                      },
+                      child: const Text("ลืมรหัสผ่าน ?"),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                RoundedButton(
+                  label: "LOGIN",
+                  onPressed: () {
+                    if (_formKeyLogin.currentState!
+                        .validate()) {
+                      _formKeyLogin.currentState!.save();
+                      print(
+                        "Email: ${_emailController.text}",
+                      );
+                      print(
+                        "Password: ${_passwordController.text}",
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          const SocialMediaOptions(),
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("ยังไม่มีบัญชีกับเรา ? "),
+              InkWell(
+                onTap: () {
+                  // Signup
+                  Navigator.pushReplacementNamed(
+                    context,
+                    AppRouter.register,
+                  );
+                },
+                child: const Text(
+                  "สมัครฟรี",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
