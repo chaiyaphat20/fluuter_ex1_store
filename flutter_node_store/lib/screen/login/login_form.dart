@@ -66,7 +66,7 @@ class LoginForm extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         // Forgot password
-                        Navigator.pushReplacementNamed(
+                        Navigator.pushNamed(
                           context,
                           AppRouter.forgotPassword,
                         );

@@ -72,10 +72,7 @@ class ForgotPasswordForm extends StatelessWidget {
               InkWell(
                 onTap: () {
                   // กลับไปหน้า Login
-                  Navigator.pushReplacementNamed(
-                    context,
-                    AppRouter.login,
-                  );
+                  Navigator.pop(context);
                 },
                 child: const Text(
                   "เข้าสู่ระบบ",
