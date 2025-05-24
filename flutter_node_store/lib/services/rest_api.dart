@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_node_store/main.dart';
 import 'package:flutter_node_store/models/api/register/register_request.dart';
 import 'package:flutter_node_store/models/api/register/register_response.dart';
 import 'package:flutter_node_store/services/dio_config.dart';

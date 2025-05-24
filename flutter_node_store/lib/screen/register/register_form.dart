@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/components/form/custom_text_form_field.dart';
 import 'package:flutter_node_store/components/rounded_button.dart';
-import 'package:flutter_node_store/main.dart';
 import 'package:flutter_node_store/models/api/register/register_request.dart';
 import 'package:flutter_node_store/services/rest_api.dart';
 import 'package:flutter_node_store/utils/utility.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter_node_store/layout_learning/ex1.dart';
-import 'package:flutter_node_store/screen/forgotpassword/forgot_password_form.dart';
 import 'package:flutter_node_store/screen/forgotpassword/forgot_password_screen.dart';
 import 'package:flutter_node_store/screen/login/login_screen.dart';
 import 'package:flutter_node_store/screen/register/register_screen.dart';
