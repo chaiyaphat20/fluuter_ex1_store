@@ -1,4 +1,3 @@
-import 'package:flutter_node_store/layout_learning/ex1.dart';
 import 'package:flutter_node_store/screen/dashboard/dashboard_screen.dart';
 import 'package:flutter_node_store/screen/drawerpage/about_screen.dart';
 import 'package:flutter_node_store/screen/drawerpage/contract_screen.dart';
@@ -14,7 +13,6 @@ class AppRouter {
   static const String login = 'login';
   static const String register = 'register';
   static const String forgotPassword = 'forgotPassword';
-  static const String ex1 = 'ex1';
   static const String dashboard = 'dashboard';
 
   //drawer
@@ -28,7 +26,6 @@ class AppRouter {
     register: (context) => const RegisterScreen(),
     forgotPassword: (context) =>
         const ForgotPasswordScreen(),
-    ex1: (context) => const Ex1(),
     login: (context) => const LoginScreen(),
     dashboard: (context) => const DashboardScreen(),
     info: (context) => const InfoScreen(),
