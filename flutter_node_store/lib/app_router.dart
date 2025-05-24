@@ -1,4 +1,8 @@
 import 'package:flutter_node_store/layout_learning/ex1.dart';
+import 'package:flutter_node_store/screen/dashboard/dashboard_screen.dart';
+import 'package:flutter_node_store/screen/drawerpage/about_screen.dart';
+import 'package:flutter_node_store/screen/drawerpage/contract_screen.dart';
+import 'package:flutter_node_store/screen/drawerpage/info_screen.dart';
 import 'package:flutter_node_store/screen/forgotpassword/forgot_password_screen.dart';
 import 'package:flutter_node_store/screen/login/login_screen.dart';
 import 'package:flutter_node_store/screen/register/register_screen.dart';
@@ -11,6 +15,12 @@ class AppRouter {
   static const String register = 'register';
   static const String forgotPassword = 'forgotPassword';
   static const String ex1 = 'ex1';
+  static const String dashboard = 'dashboard';
+
+  //drawer
+  static const String info = 'info';
+  static const String about = 'about';
+  static const String contact = 'contact';
 
   // ignore: always_declare_return_types
   static get routes => {
@@ -20,5 +30,9 @@ class AppRouter {
         const ForgotPasswordScreen(),
     ex1: (context) => const Ex1(),
     login: (context) => const LoginScreen(),
+    dashboard: (context) => const DashboardScreen(),
+    info: (context) => const InfoScreen(),
+    about: (context) => const AboutScreen(),
+    contact: (context) => const ContractScreen(),
   };
 }

@@ -34,27 +34,19 @@ class RegisterForm extends StatelessWidget {
     var result = await LoginAPI().registerAPI(body);
     if (result.isSuccess) {
       final response = result.data!;
-      if (response.status == 'ok') {
-        await Utility.showAlertDialog(
-          context,
-          'สำเร็จ',
-          'ลงทะเบียนสำเร็จ!',
-        );
-        Navigator.pushReplacementNamed(
-          context,
-          AppRouter.login,
-        );
-      } else {
-        Utility.showAlertDialog(
-          context,
-          'แจ้งเตือน',
-          response.message,
-        );
-      }
+      await Utility.showAlertDialog(
+        context,
+        'ok',
+        response.message,
+      );
+      Navigator.pushReplacementNamed(
+        context,
+        AppRouter.login,
+      );
     } else {
       Utility.showAlertDialog(
         context,
-        'แจ้งเตือน',
+        'error',
         result.errorMessage,
       );
     }

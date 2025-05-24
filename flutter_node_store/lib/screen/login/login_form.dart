@@ -25,24 +25,30 @@ class LoginForm extends StatelessWidget {
     if (result.isSuccess) {
       final response = result.data!;
       Utility.logger.d(response.toJson());
+      await Utility.showAlertDialog(
+        context,
+        'ok',
+        response.message,
+      );
 
-      if (response.status == 'ok') {
-        await Utility.showAlertDialog(
-          context,
-          'ok',
-          response.message,
-        );
-        // Navigator.pushReplacementNamed(
-        //   context,
-        //   AppRouter.login,
-        // );
-      } else {
-        Utility.showAlertDialog(
-          context,
-          'error',
-          response.message,
-        );
-      }
+      //set shared
+      await Utility.setSharedPreference(
+        "loginStatus",
+        true,
+      );
+      await Utility.setSharedPreference(
+        "token",
+        response.token,
+      );
+      await Utility.setSharedPreference(
+        "user",
+        response.user,
+      );
+
+      Navigator.pushReplacementNamed(
+        context,
+        AppRouter.dashboard,
+      );
     } else {
       Utility.showAlertDialog(
         context,
