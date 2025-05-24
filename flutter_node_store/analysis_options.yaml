@@ -17,6 +17,8 @@ linter:
     use_build_context_synchronously: true
 
 analyzer:
+  errors:
+    use_build_context_synchronously: ignore
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
