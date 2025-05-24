@@ -3,7 +3,7 @@ import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/components/form/custom_text_form_field.dart';
 import 'package:flutter_node_store/components/rounded_button.dart';
 import 'package:flutter_node_store/models/api/register/register_request.dart';
-import 'package:flutter_node_store/services/rest_api.dart';
+import 'package:flutter_node_store/services/login_api.dart';
 import 'package:flutter_node_store/utils/utility.dart';
 
 class RegisterForm extends StatelessWidget {
@@ -20,6 +20,45 @@ class RegisterForm extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _confirmPasswordController =
       TextEditingController();
+
+  Future<void> _handleRegister(BuildContext context) async {
+    if (!_formKeyRegister.currentState!.validate()) return;
+
+    var body = RegisterRequest(
+      firstname: _firstNameController.text,
+      lastname: _lastNameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    var result = await LoginAPI().registerAPI(body);
+    if (result.isSuccess) {
+      final response = result.data!;
+      if (response.status == 'ok') {
+        await Utility.showAlertDialog(
+          context,
+          'สำเร็จ',
+          'ลงทะเบียนสำเร็จ!',
+        );
+        Navigator.pushReplacementNamed(
+          context,
+          AppRouter.login,
+        );
+      } else {
+        Utility.showAlertDialog(
+          context,
+          'แจ้งเตือน',
+          response.message,
+        );
+      }
+    } else {
+      Utility.showAlertDialog(
+        context,
+        'แจ้งเตือน',
+        result.errorMessage,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,69 +152,7 @@ class RegisterForm extends StatelessWidget {
                 const SizedBox(height: 10),
                 RoundedButton(
                   label: "SIGN UP",
-                  onPressed: () async {
-                    // ตรวจสอบข้อมูลฟอร์ม
-                    if (_formKeyRegister.currentState!
-                        .validate()) {
-                      // ถ้าข้อมูลถูกต้อง ให้ทำการบันทึกข้อมูล
-                      // _formKeyRegister.currentState!.save();
-
-                      // แสดงข้อมูลที่บันทึกได้ทาง Console
-                      print(
-                        "First Name: ${_firstNameController.text}",
-                      );
-                      print(
-                        "Last Name: ${_lastNameController.text}",
-                      );
-                      print(
-                        "Email: ${_emailController.text}",
-                      );
-                      print(
-                        "Password: ${_passwordController.text}",
-                      );
-
-                      // เรียกใช้งาน API สำหรับลงทะเบียน Register
-                      var body = RegisterRequest(
-                        firstname:
-                            _firstNameController.text,
-                        lastname: _lastNameController.text,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
-                      var response = await CallAPI()
-                          .registerAPI(body);
-                      if (response.message ==
-                          'No Network Connection') {
-                        // แจ้งเตือนว่าไม่มีการเชื่อมต่อ Internet
-                        Utility.showAlertDialog(
-                          context,
-                          'แจ้งเตือน',
-                          "No Network Connection",
-                        );
-                      } else {
-                        if (response.status == 'ok') {
-                          // แจ้งเตือนว่าลงทะเบียนสำเร็จ
-                          Utility.showAlertDialog(
-                            context,
-                            'แจ้งเตือน',
-                            response.message,
-                          );
-                          // ส่งกลับไปหน้า Login
-                          Navigator.pushReplacementNamed(
-                            context,
-                            AppRouter.login,
-                          );
-                        } else {
-                          // แจ้งเตือนว่าลงทะเบียนไม่สำเร็จ
-                          Utility.showAlertDialog(
-                            context,
-                            'แจ้งเตือน',
-                            response.message,
-                          );
-                        }
-                      }
-                    }
-                  },
+                  onPressed: () => _handleRegister(context),
                 ),
               ],
             ),

@@ -3,6 +3,9 @@ import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/components/form/custom_text_form_field.dart';
 import 'package:flutter_node_store/components/rounded_button.dart';
 import 'package:flutter_node_store/components/social_media_options.dart';
+import 'package:flutter_node_store/models/api/login/login_request.dart';
+import 'package:flutter_node_store/services/login_api.dart';
+import 'package:flutter_node_store/utils/utility.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({super.key});
@@ -10,6 +13,46 @@ class LoginForm extends StatelessWidget {
   final _formKeyLogin = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  Future<void> _handleLogin(BuildContext context) async {
+    if (!_formKeyLogin.currentState!.validate()) return;
+
+    var body = LoginRequest(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    var result = await LoginAPI().loginAPI(body);
+    print(result.errorMessage);
+    if (result.isSuccess) {
+      final response = result.data!;
+      Utility.logger.e("response");
+
+      if (response.status == 'ok') {
+        await Utility.showAlertDialog(
+          context,
+          'สำเร็จ',
+          'Login สำเร็จ!',
+        );
+        // Navigator.pushReplacementNamed(
+        //   context,
+        //   AppRouter.login,
+        // );
+      } else {
+        Utility.showAlertDialog(
+          context,
+          'แจ้งเตือน',
+          response.message,
+        );
+      }
+    } else {
+      Utility.showAlertDialog(
+        context,
+        'แจ้งเตือน',
+        result.errorMessage,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +73,7 @@ class LoginForm extends StatelessWidget {
             child: Column(
               children: [
                 customTextFormField(
-                  obscureText: true,
+                  obscureText: false,
                   controller: _emailController,
                   hintText: "Email",
                   prefixIcon: Icons.email,
@@ -78,18 +121,7 @@ class LoginForm extends StatelessWidget {
                 const SizedBox(height: 10),
                 RoundedButton(
                   label: "LOGIN",
-                  onPressed: () {
-                    if (_formKeyLogin.currentState!
-                        .validate()) {
-                      _formKeyLogin.currentState!.save();
-                      print(
-                        "Email: ${_emailController.text}",
-                      );
-                      print(
-                        "Password: ${_passwordController.text}",
-                      );
-                    }
-                  },
+                  onPressed: () => _handleLogin(context),
                 ),
               ],
             ),
